@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: aws-load-balancer-controller
+spec:
+  generators:
+  - clusters: {}
+  template:
+    metadata:
+      name: '{{ name }}-aws-load-balancer-controller'
+      labels:
+        app: aws-load-balancer-controller
+    spec:
+      project: default
+      source:
+        repoURL: https://aws.github.io/eks-charts
+        targetRevision: 1.4.1
+        chart: aws-load-balancer-controller
+        helm:
+          releaseName: aws-load-balancer-controller
+          values: |
+            clusterName: {{ name }}
+            region: {{ metadata.annotations.awsRegion }}
+            vpcId: {{ metadata.annotations.awsVpcID }}
+            serviceAccount:
+              annotations:
+                "eks.amazonaws.com/role-arn": "arn:aws:iam::{{ metadata.annotations.awsAccountID }}:role/{{ name }}-load-balancer-controller"
+      destination:
+        name: '{{ name }}'
+        namespace: kube-system
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 5
