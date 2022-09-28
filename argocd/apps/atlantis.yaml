@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: atlantis
+spec:
+  generators:
+  - clusters: {}
+  template:
+    metadata:
+      name: '{{name}}-atlantis'
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+      labels:
+        app: atlantis
+    spec:
+      project: default
+      source:
+        repoURL: git@github.com:jmorgan415/wiz-atlantis-poc.git
+        targetRevision: main
+        path: "charts/atlantis"
+        helm:
+          releaseName: atlantis
+          valueFiles:
+          - values.yaml
+          values: |
+            atlantis:
+              serviceAccount:
+                annotations:
+                  "eks.amazonaws.com/role-arn": "arn:aws:iam::{{ metadata.annotations.awsAccountID }}:role/{{name}}-atlantis-manager"
+                create: true
+                name: atlantis
+      destination:
+        name: '{{name}}'
+        namespace: atlantis
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true

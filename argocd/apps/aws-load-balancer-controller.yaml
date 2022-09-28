@@ -7,7 +7,7 @@ spec:
   - clusters: {}
   template:
     metadata:
-      name: '{{ name }}-aws-load-balancer-controller'
+      name: '{{name}}-aws-load-balancer-controller'
       labels:
         app: aws-load-balancer-controller
     spec:
@@ -19,14 +19,14 @@ spec:
         helm:
           releaseName: aws-load-balancer-controller
           values: |
-            clusterName: {{ name }}
+            clusterName: {{name}}
             region: {{ metadata.annotations.awsRegion }}
             vpcId: {{ metadata.annotations.awsVpcID }}
             serviceAccount:
               annotations:
                 "eks.amazonaws.com/role-arn": "arn:aws:iam::{{ metadata.annotations.awsAccountID }}:role/{{ name }}-load-balancer-controller"
       destination:
-        name: '{{ name }}'
+        name: '{{name}}'
         namespace: kube-system
       syncPolicy:
         syncOptions:
