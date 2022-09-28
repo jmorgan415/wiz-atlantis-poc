@@ -15,7 +15,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: git@github.com:jmorgan415/wiz-atlantis-poc.git
+        repoURL: https://github.com/jmorgan415/wiz-atlantis-poc
         targetRevision: main
         path: "argocd/charts/atlantis"
         helm:
