@@ -17,7 +17,7 @@ spec:
       source:
         repoURL: git@github.com:jmorgan415/wiz-atlantis-poc.git
         targetRevision: main
-        path: "charts/atlantis"
+        path: "argocd/charts/atlantis"
         helm:
           releaseName: atlantis
           valueFiles:
