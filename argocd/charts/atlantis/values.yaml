@@ -1,10 +1,15 @@
 atlantis:
-  orgWhitelist: github.com/jmorgan415/wiz-atlantis-poc
+  orgWhitelist: github.com/jmorgan415/*
   logLevel: "info"
 
   github:
     user: "override-in-secret"
   vcsSecretName: "atlantis-vcs"
+
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::984186218765:role/wiz-demo-infra-atlantis-manager
+
 
   ## Use Server Side Repo Config,
   ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
