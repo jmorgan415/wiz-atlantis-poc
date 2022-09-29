@@ -1,0 +1,55 @@
+version: 3
+automerge: false
+parallel_plan: true
+parallel_apply: true
+
+projects:
+########## Apps ##########
+## aws ##
+- name: aws-demo
+  dir: terraform/aws/apps/bucket
+  terraform_version: v1.1.9
+  workspace: aws-demo
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
+# ## azure ##
+# - name: azure-demo
+#   dir: terraform/aws/apps/azure_demo
+#   terraform_version: v1.1.9
+#   workspace: ec2_demo
+#   workflow: ws
+#   autoplan:
+#     when_modified: ["*.tf", "config.tfvars"]
+#   apply_requirements: [mergeable]
+
+# ## gcp ##
+# - name: gcp-demo
+#   dir: terraform/aws/apps/gcp_demo
+#   terraform_version: v1.1.9
+#   workspace: ec2_demo
+#   workflow: ws
+#   autoplan:
+#     when_modified: ["*.tf", "config.tfvars"]
+#   apply_requirements: [mergeable]
+
+## Non-default workflows:
+# workflows:
+#   datadog:
+#     plan:
+#       steps:
+#       - env:
+#           name: DATADOG_APP_KEY
+#           command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".datadog.datadog_app_key"'
+#       - env:
+#           name: DATADOG_API_KEY
+#           command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".datadog.datadog_api_key"'
+#       - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
+#       - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
+#       - run: if [ "$DATADOG_APP_KEY" != "null" ] && [ "$DATADOG_API_KEY" != "null" ]; then terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -var "datadog_app_key=${DATADOG_APP_KEY}" -var "datadog_api_key=${DATADOG_API_KEY}" -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; else terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; fi
+#     apply:
+#       steps:
+#       - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
+  
