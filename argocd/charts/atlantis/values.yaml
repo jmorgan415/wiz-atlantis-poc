@@ -66,7 +66,7 @@ atlantis:
       mountPath: /gcp-creds.json
       subPath: gcp-creds.json
   extraVolumes:
-    - name: gcp
+    - name: gcp-creds
       secret:
         secretName: gcp-creds
         
