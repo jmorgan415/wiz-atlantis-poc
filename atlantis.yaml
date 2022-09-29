@@ -4,6 +4,46 @@ parallel_plan: true
 parallel_apply: true
 
 projects:
+########## VPC ##########
+- name: wiz-demo-infra-vpc
+  dir: terraform/aws/common/vpc
+  terraform_version: v1.1.9
+  workspace: wiz-demo-infra
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
+########## EKS ##########
+- name: wiz-demo-infra-eks
+  dir: terraform/aws/common/eks
+  terraform_version: v1.1.9
+  workspace: wiz-demo-infra
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
+########## IAM Atlantis ##########
+- name: wiz-demo-infra-iam-atlantis
+  dir: terraform/aws/account/iam/atlantis
+  terraform_version: v1.1.9
+  workspace: wiz-demo-infra
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
+########## Backend ##########
+- name: wiz-demo-infra-backend
+  dir: terraform/aws/backend
+  terraform_version: v1.1.9
+  workspace: wiz-demo-infra
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
 ########## Apps ##########
 ## aws ##
 - name: aws-demo
@@ -17,9 +57,9 @@ projects:
 
 # ## azure ##
 # - name: azure-demo
-#   dir: terraform/aws/apps/azure_demo
+#   dir: terraform/aws/apps/bucket
 #   terraform_version: v1.1.9
-#   workspace: ec2_demo
+#   workspace: azure-demo
 #   workflow: ws
 #   autoplan:
 #     when_modified: ["*.tf", "config.tfvars"]
@@ -27,9 +67,9 @@ projects:
 
 # ## gcp ##
 # - name: gcp-demo
-#   dir: terraform/aws/apps/gcp_demo
+#   dir: terraform/gcp/apps/bucket
 #   terraform_version: v1.1.9
-#   workspace: ec2_demo
+#   workspace: gcp-demo
 #   workflow: ws
 #   autoplan:
 #     when_modified: ["*.tf", "config.tfvars"]
@@ -52,4 +92,3 @@ projects:
 #     apply:
 #       steps:
 #       - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
-  
