@@ -40,10 +40,8 @@ atlantis:
          - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
 
   service:
-    type: NodePort
-    port: 80
-    targetPort: 4141
-    loadBalancerIP: null
+    type: ClusterIP
+    port: 8080
 
   ingress:
     enabled: true
