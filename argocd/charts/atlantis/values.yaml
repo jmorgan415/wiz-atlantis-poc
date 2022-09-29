@@ -2,7 +2,9 @@ atlantis:
   orgWhitelist: github.com/jmorgan415/wiz-atlantis-poc
   logLevel: "info"
 
-  vcsSecretName: "atlantis-webhook"
+  github:
+    user: "override-in-secret"
+  vcsSecretName: "atlantis-vcs"
 
   ## Use Server Side Repo Config,
   ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
