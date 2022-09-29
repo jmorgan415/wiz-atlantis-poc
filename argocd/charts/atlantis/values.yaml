@@ -60,3 +60,13 @@ atlantis:
     limits:
       memory: 8Gi
       cpu: 2
+
+  extraVolumeMounts:
+    - name: gcp-creds
+      mountPath: /gcp-creds.json
+      subPath: gcp-creds.json
+  extraVolumes:
+    - name: gcp
+      secret:
+        secretName: gcp-creds
+        
