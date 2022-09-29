@@ -14,6 +14,6 @@ resource "aws_s3_bucket" "demo" {
 
   tags = {
     Name        = "wiz-demo-atlantis-aws"
-    Environment = "test1"
+    Environment = "test"
   }
 }
