@@ -34,16 +34,6 @@ projects:
     when_modified: ["*.tf", "config.tfvars"]
   apply_requirements: [mergeable]
 
-########## Backend ##########
-- name: wiz-demo-infra-backend
-  dir: terraform/aws/backend
-  terraform_version: v1.1.9
-  workspace: wiz-demo-infra
-  workflow: ws
-  autoplan:
-    when_modified: ["*.tf", "config.tfvars"]
-  apply_requirements: [mergeable]
-
 ########## Apps ##########
 ## aws ##
 - name: aws-demo
