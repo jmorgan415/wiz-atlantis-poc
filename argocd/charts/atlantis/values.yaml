@@ -10,6 +10,10 @@ atlantis:
     annotations:
       eks.amazonaws.com/role-arn: arn:aws:iam::984186218765:role/wiz-demo-infra-atlantis-manager
 
+  image:
+    repository: 984186218765.dkr.ecr.us-east-2.amazonaws.com/atlantis
+    tag: v0.18.4
+    pullPolicy: IfNotPresent
 
   ## Use Server Side Repo Config,
   ## ref: https://www.runatlantis.io/docs/server-side-repo-config.html
@@ -63,8 +67,8 @@ atlantis:
 
   extraVolumeMounts:
     - name: gcp-creds
-      mountPath: /gcp-creds.json
-      subPath: gcp-creds.json
+      mountPath: /gcp.json
+      subPath: gcp.json
   extraVolumes:
     - name: gcp-creds
       secret:
