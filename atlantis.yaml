@@ -45,21 +45,21 @@ projects:
     when_modified: ["*.tf", "config.tfvars"]
   apply_requirements: [mergeable]
 
+## gcp ##
+- name: gcp-demo
+  dir: terraform/gcp/apps/bucket
+  terraform_version: v1.1.9
+  workspace: gcp-demo
+  workflow: ws
+  autoplan:
+    when_modified: ["*.tf", "config.tfvars"]
+  apply_requirements: [mergeable]
+
 # ## azure ##
 # - name: azure-demo
 #   dir: terraform/aws/apps/bucket
 #   terraform_version: v1.1.9
 #   workspace: azure-demo
-#   workflow: ws
-#   autoplan:
-#     when_modified: ["*.tf", "config.tfvars"]
-#   apply_requirements: [mergeable]
-
-# ## gcp ##
-# - name: gcp-demo
-#   dir: terraform/gcp/apps/bucket
-#   terraform_version: v1.1.9
-#   workspace: gcp-demo
 #   workflow: ws
 #   autoplan:
 #     when_modified: ["*.tf", "config.tfvars"]
