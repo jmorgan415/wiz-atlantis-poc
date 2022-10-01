@@ -26,7 +26,8 @@ data "aws_partition" "current" {}
 ################################################################################
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "18.30.0"
 
   cluster_name                    = local.name
   cluster_version                 = local.cluster_version
@@ -102,6 +103,14 @@ module "eks" {
       source_cluster_security_group = true
       description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
     }
+  }
+
+  # node_security_group_tags = {
+  #   "kubernetes.io/cluster/${local.name}" = null
+  # }
+
+  cluster_security_group_tags = {
+    "kubernetes.io/cluster/${local.name}" = null
   }
 
   eks_managed_node_groups = {
