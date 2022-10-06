@@ -1,4 +1,4 @@
-FROM runatlantis/atlantis:v0.18.4
+FROM --platform=linux/amd64 ghcr.io/runatlantis/atlantis:v0.19.9
 
 RUN apk add --no-cache \
         python3 \
@@ -8,5 +8,3 @@ RUN apk add --no-cache \
     && pip3 install \
         awscli \
     && rm -rf /var/cache/apk/*
-
-RUN chown -R atlantis:atlantis /usr/local/bin/atlantis
