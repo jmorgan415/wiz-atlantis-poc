@@ -12,6 +12,12 @@ variable "arm_client_secret" {
   default     = null
 }
 
+variable "arm_subscription_id" {
+  description = "Azure subscription id"
+  type        = string
+  default     = null
+}
+
 variable "arm_tenant_id" {
   description = "Azure tenant id"
   type        = string
