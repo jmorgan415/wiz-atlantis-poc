@@ -1,4 +1,4 @@
-# AWS Info
+# GCP Info
 provider "google" {
   region      = var.config[terraform.workspace].region
   project     = var.config[terraform.workspace].project
