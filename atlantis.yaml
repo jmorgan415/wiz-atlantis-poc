@@ -72,16 +72,16 @@ workflows:
       steps:
       - env:
           name: ARM_CLIENT_ID
-          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".appId"'
+          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".appId"'
       - env:
           name: ARM_CLIENT_SECRET
-          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".password"'
+          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".password"'
       - env:
           name: ARM_SUBSCRIPTION_ID
-          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".subscription"'
+          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".subscription"'
       - env:
           name: ARM_TENANT_ID
-          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-1 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".tenant"'
+          command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".tenant"'
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
       - run: if [ "$ARM_CLIENT_ID" != "null" ] && [ "$ARM_CLIENT_SECRET" != "null" ] && [ "$ARM_SUBSCRIPTION_ID" != "null" ] && [ "$ARM_TENANT_ID" != "null" ]; then terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -var "arm_client_id=${ARM_CLIENT_ID}" -var "arm_client_secret=${ARM_CLIENT_SECRET}" -var "arm_client_secret=${ARM_SUBSCRIPTION_ID}" -var "arm_tenant_id=${ARM_TENANT_ID}" -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; else terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; fi
