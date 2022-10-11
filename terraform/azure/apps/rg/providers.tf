@@ -8,3 +8,8 @@ terraform {
     }
   }
 }
+
+# Azure
+provider "azurerm" {
+  features {}
+}
