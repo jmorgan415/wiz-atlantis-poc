@@ -1,4 +1,8 @@
-variable "config" {}
+variable "rg_name" {
+  description = "Resource Group name"
+  type        = string
+  default     = ""
+}
 
 variable "arm_client_id" {
   description = "Azure client id"
