@@ -28,25 +28,25 @@ atlantis:
      # workflows.
      allow_custom_workflows: true
      # delete_source_branch_on_merge: true
-   workflows:
-     default:
-       plan:
-         steps:
-         - init
-         - plan:
-             extra_args: ["-var-file", ./config.tfvars"]
-       apply:
-         steps:
-         - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
-     ws:
-       plan:
-         steps:
-         - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
-         - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
-         - run: terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE
-       apply:
-         steps:
-         - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
+  #  workflows:
+  #    default:
+  #      plan:
+  #        steps:
+  #        - init
+  #        - plan:
+  #            extra_args: ["-var-file", ./config.tfvars"]
+  #      apply:
+  #        steps:
+  #        - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
+  #    ws:
+  #      plan:
+  #        steps:
+  #        - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
+  #        - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
+  #        - run: terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./config.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE
+  #      apply:
+  #        steps:
+  #        - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
 
   service:
     type: LoadBalancer
@@ -65,12 +65,11 @@ atlantis:
       memory: 8Gi
       cpu: 2
 
-  extraVolumeMounts:
-    - name: gcp-creds
-      mountPath: /gcp.json
-      subPath: gcp.json
-  extraVolumes:
-    - name: gcp-creds
-      secret:
-        secretName: atlantis-vcs
-        
+  # extraVolumeMounts:
+  #   - name: gcp-creds
+  #     mountPath: /gcp.json
+  #     subPath: gcp.json
+  # extraVolumes:
+  #   - name: gcp-creds
+  #     secret:
+  #       secretName: atlantis-vcs
