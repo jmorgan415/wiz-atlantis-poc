@@ -93,7 +93,7 @@ workflows:
           command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".azure_creds" | jq -r ".tenant"'
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
-      - run: if [ -v "$ARM_CLIENT_ID" ] && [ -v "$ARM_CLIENT_SECRET" ] && [ -v "$ARM_SUBSCRIPTION_ID" ] && [ -v "$ARM_TENANT_ID" ]; then terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./${WORKSPACE}.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; else echo "Please add the required env vars for the azure terraform provider"; fi
+      - run: if [ -z "$ARM_CLIENT_ID" ] || [ -z "$ARM_CLIENT_SECRET" ] || [ -z "$ARM_SUBSCRIPTION_ID" ] || [ -z "$ARM_TENANT_ID" ]; then echo "Please add the required env vars for the azure terraform provider" && exit 1; else terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./${WORKSPACE}.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; fi
     apply:
       steps:
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
@@ -105,7 +105,7 @@ workflows:
           command: 'aws secretsmanager get-secret-value --secret-id atlantis --region us-east-2 | jq --raw-output .SecretString | jq -r ".gcp_creds"'
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} init -input=false -no-color
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE} || terraform${ATLANTIS_TERRAFORM_VERSION} workspace new ${WORKSPACE} && terraform${ATLANTIS_TERRAFORM_VERSION} workspace select -no-color ${WORKSPACE}
-      - run: if [ -v "$GOOGLE_CREDENTIALS" ]; then terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./${WORKSPACE}.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; else echo "Please add the required env vars for the google terraform provider"; fi
+      - run: if [ -z "$GOOGLE_CREDENTIALS" ]; then echo "Please add the required env vars for the google terraform provider" && exit 1; else terraform${ATLANTIS_TERRAFORM_VERSION} plan -var-file=./${WORKSPACE}.tfvars -input=false -refresh -no-color -parallelism=50 -out $PLANFILE; fi
     apply:
       steps:
       - run: terraform${ATLANTIS_TERRAFORM_VERSION} apply -no-color -parallelism=50 $PLANFILE
